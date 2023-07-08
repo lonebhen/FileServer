@@ -21,11 +21,14 @@ class CustomUser(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("is_superuser", True)
 
         if extra_fields.get("is_active") is not True:
             raise ValueError(
                 "Admin must have the is_active attribute set to true")
         if extra_fields.get("is_active") is not True:
+            raise ValueError("Admin must have is_active attribute set to True")
+        if extra_fields.get("is_superuser") is not True:
             raise ValueError("Admin must have is_active attribute set to True")
 
         return self.create_user(email=email, password=password, **extra_fields)

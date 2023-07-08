@@ -39,12 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'accounts.apps.AccountsConfig',
+    'server.apps.ServerConfig',
 
     # third party apps
 
     'rest_framework',
-    'rest_framework.authtoken'
-
+    'rest_framework.authtoken',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,8 @@ REST_FRAMEWORK = {
     ]
 }
 
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -142,3 +145,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+AWS_ACCESS_KEY_ID = 'AKIA3MD7WEKD3CCBJTLL'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'ben-fileserver'
+AWS_S3_SIGNATURE_NAME = 's3v4',
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL =  None
+AWS_S3_VERITY = True
+
