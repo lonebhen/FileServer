@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status
+from rest_framework.parsers import JSONParser
 
 # Create your views here.
 
@@ -35,10 +36,11 @@ class SignupView(GenericAPIView):
 
 class LoginView(GenericAPIView):
     permission_classes = [AllowAny, ]
+    parser_classes = [JSONParser]
 
     def post(self, request: Request):
-        email = request.data["email"]
-        password = request.data["password"]
+        email = request.data.get("email")
+        password = request.data.get("password")
 
         user = authenticate(email=email, password=password)
 
@@ -63,6 +65,7 @@ class LoginView(GenericAPIView):
 class ResetPasswordView(GenericAPIView):
     serializer_class = ResetPasswordSerializer
     permission_classes = [AllowAny,]
+    parser_classes = [JSONParser]
 
     def post(self, request: Request):
         data = request.data
