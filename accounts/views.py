@@ -16,6 +16,7 @@ from rest_framework.parsers import JSONParser
 class SignupView(GenericAPIView):
     serializer_class = SignupSerializer
     permission_classes = [AllowAny, ]
+    parser_classes = [JSONParser]
 
     def post(self, request: Request):
         data = request.data
@@ -30,8 +31,11 @@ class SignupView(GenericAPIView):
             }
 
             return Response(data=response, status=status.HTTP_201_CREATED)
+        response = {
+            "message": "Signup unsuccessful, Username or email already exits"
+        }
 
-        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(data=response, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginView(GenericAPIView):
