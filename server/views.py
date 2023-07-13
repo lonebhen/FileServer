@@ -3,10 +3,10 @@ from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, APIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
-from .models import Files, FileActivity
-from .serializers import FileSerializer, FileActivitySerializer
+from .models import Files
+from .serializers import FileSerializer
 
 
 # Create your views here.
@@ -29,24 +29,27 @@ class RetrieveFilesView(GenericAPIView):
 
         return Response(data=response, status=status.HTTP_200_OK)
 
-@api_view(['POST'])
-def email_sending_activity(request: Request, file_id: int):
-    try:
-        file = Files.objects.get(pk = file_id)
-        file_activity = file.fileactivity
 
-        file_activity.emailed += 1
-        file_activity.save()
+class FileEmailAPIView(APIView):
+    def post(self, request, file_id):
+        try:
+            file = Files.objects.get(id=file_id)
+            
+            file.number_of_emails += 1
+            file.save()
 
-        response = {
-            "message": "File sent succesful"
-        }
+            return Response({"message": "File emailed count updated."})
+        except Files.DoesNotExist:
+            return Response({"message": "File not found."})
+        
+class FileDownloadAPIView(APIView):
+    def post(self, request, file_id):
+        try:
+            file = Files.objects.get(id=file_id)
+            
+            file.number_of_downloads += 1
+            file.save()
 
-        return Response(data=response, status=status.HTTP_200_OK)
-    
-    except Files.DoesNotExist:
-        response = {
-            "message": "File does not exist"
-        }
-
-        return Response(data=response, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": "File download count updated."})
+        except Files.DoesNotExist:
+            return Response({"message": "File not found."})
