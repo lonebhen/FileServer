@@ -31,7 +31,7 @@ class RetrieveFilesView(GenericAPIView):
 
 
 class FileEmailAPIView(APIView):
-    def post(self, request, file_id):
+    def post(self, request: Request, file_id: int, email: str):
         try:
             file = Files.objects.get(id=file_id)
             
@@ -43,7 +43,7 @@ class FileEmailAPIView(APIView):
             return Response({"message": "File not found."})
         
 class FileDownloadAPIView(APIView):
-    def post(self, request, file_id):
+    def post(self, request: Request, file_id: int):
         try:
             file = Files.objects.get(id=file_id)
             
