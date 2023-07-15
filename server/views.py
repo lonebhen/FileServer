@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view, APIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from .models import Files
 from .serializers import FileSerializer
+from .send_mail import send_file_email
 
 
 # Create your views here.
@@ -33,6 +34,7 @@ class RetrieveFilesView(GenericAPIView):
 class FileEmailAPIView(APIView):
     def post(self, request: Request, file_id: int, email: str):
         try:
+            send_file_email(file_id, email)
             file = Files.objects.get(id=file_id)
             
             file.number_of_emails += 1
