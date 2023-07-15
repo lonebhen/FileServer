@@ -41,12 +41,6 @@ def send_file_email(id: int, email: str):
     attachment.add_header("Content-Disposition", "attachment", filename=file_name)
     email.attach(attachment)
 
-    # # Send the email
-    # with smtplib.SMTP(host="your-smtp-host", port=587) as server:
-    #     server.starttls()
-    #     server.login("your-email@example.com", "your-email-password")
-    #     server.sendmail(email_from, email_to, email.as_string())
-
 
     # Send the email
     with smtplib.SMTP(host="smtp.gmail.com", port=587) as server:
