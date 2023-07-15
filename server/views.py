@@ -40,7 +40,7 @@ class FileEmailAPIView(APIView):
             file.number_of_emails += 1
             file.save()
 
-            return Response({"message": "File emailed count updated."})
+            return Response({"message": "File emailed and count updated."})
         except Files.DoesNotExist:
             return Response({"message": "File not found."})
         
@@ -52,6 +52,6 @@ class FileDownloadAPIView(APIView):
             file.number_of_downloads += 1
             file.save()
 
-            return Response({"message": "File download count updated."})
+            return Response({"message": "File downloaded and count updated."})
         except Files.DoesNotExist:
             return Response({"message": "File not found."})
