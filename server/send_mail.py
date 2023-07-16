@@ -18,7 +18,6 @@ def send_file_email(id: int, email: str):
     email_from = "ben.angmortey@gmail.com"
     email_to = email
 
-    # Create the email message
     email = MIMEMultipart()
     email["Subject"] = email_subject
     email["From"] = email_from
@@ -42,7 +41,6 @@ def send_file_email(id: int, email: str):
     email.attach(attachment)
 
 
-    # Send the email
     with smtplib.SMTP(host="smtp.gmail.com", port=587) as server:
         server.starttls()
         server.login("ben.angmortey@gmail.com", "uuyhmqzqikfimosg")
