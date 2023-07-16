@@ -9,4 +9,4 @@ admin.site.site_title = "FileServer"
 
 
 admin.site.register(Files)
-# admin.site.register(FileActivity)
+

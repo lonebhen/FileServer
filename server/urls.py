@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-# from .views import email_sending_activity
+
 
 urlpatterns = [
 

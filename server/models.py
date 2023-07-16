@@ -2,14 +2,7 @@ import os
 from django.db import models
 import uuid
 from django.utils.deconstruct import deconstructible
-from django.dispatch import receiver
 
-# Create your models here.
-
-# def upload_to(instance, filename):
-#     filename = f"{uuid.uuid4().hex}{os.path.splitext(filename)[1]}"
-
-#     return f"uploads/{instance.id}/{filename}"
 
 
 @deconstructible
@@ -43,29 +36,3 @@ class Files(models.Model):
 
 
 
-# class FileActivity(models.Model):
-#     file = models.OneToOneField(Files, on_delete=models.CASCADE, related_name='file_activity')
-#     downloads = models.PositiveIntegerField(default=0)
-#     emailed = models.PositiveIntegerField(default=0)
-
-#     class Meta:
-#         verbose_name_plural = "File Activity"
-
-#     def __str__(self) -> str:
-#         return f"{self.file.name} Activity"
-
-
-
-
-# def create_file_activity(sender, instance, created, **kwargs):
-#     if created and not hasattr(instance, 'file_activity'):
-#         FileActivity.objects.create(file=instance)
-
-
-# models.signals.post_save.connect(create_file_activity, sender=Files)
-
-
-
-
-
-    

@@ -9,7 +9,3 @@ class FileSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "description", "file"]
 
 
-# class FileActivitySerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = FileActivity
-#         fields = "__all__"
