@@ -9,3 +9,10 @@ venv/
 
 # Environment variables
 .env
+
+
+
+# Cache files
+
+*.pyc
+__pycache__/
