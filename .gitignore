@@ -5,3 +5,7 @@ venv/
 
 # Formating
 .vscode/
+
+
+# Environment variables
+.env

@@ -9,8 +9,13 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+import dj_database_url
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-q^#btcq^!uhug@7800r_f7py=!6h8@fl!kp@7q&5-2c#yig!+&'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -109,11 +114,15 @@ WSGI_APPLICATION = 'fileserver.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600),
 }
 
 AUTH_USER_MODEL = "accounts.User"
@@ -133,8 +142,8 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'ben.angmortey@gmail.com'
-EMAIL_HOST_PASSWORD = 'uuyhmqzqikfimosg'
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -183,9 +192,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-AWS_ACCESS_KEY_ID = 'AKIA3MD7WEKD3CCBJTLL'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'ben-fileserver'
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_SIGNATURE_NAME = 's3v4',
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL =  None
