@@ -5,8 +5,8 @@ The File Server project aims to create a digital platform for document distribut
 
 <br>
 
-This project was made with Angular and Django.
+This project was made with <b>Django</b> and <b>Angular</b>
 
-This is the <b>frontend</b>. <br>
+This is the link to the <b>frontend</b> files <br>
 
 [File Server](https://github.com/lonebhen/FileServer-Frontend)
