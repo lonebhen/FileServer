@@ -25,7 +25,7 @@ class RetrieveFilesView(GenericAPIView):
         seriaizer = self.serializer_class(instance=files, many = True)
 
         response = {
-            "message": "These are al the files",
+            "message": "These are all the files",
             "data": seriaizer.data
         }
 
