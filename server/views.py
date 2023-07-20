@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import FileResponse
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -52,6 +53,10 @@ class FileDownloadAPIView(APIView):
             file.number_of_downloads += 1
             file.save()
 
-            return Response({"message": "File downloaded and count updated."})
+            response = FileResponse(file.file, content_type='application/octet-stream')
+            response['Content-Disposition'] = f'attachment; filename="{file.name}"'
+            return response
+
+
         except Files.DoesNotExist:
             return Response({"message": "File not found."})
