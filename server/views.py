@@ -46,7 +46,8 @@ class FileEmailAPIView(APIView):
             return Response({"message": "File not found."})
         
 class FileDownloadAPIView(APIView):
-    def post(self, request: Request, file_id: int):
+    permission_classes = [IsAuthenticated]
+    def get(self, request: Request, file_id: int):
         try:
             file = Files.objects.get(id=file_id)
             
