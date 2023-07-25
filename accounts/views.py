@@ -1,85 +1,42 @@
-from django.shortcuts import render
-from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token
-from .serializers import SignupSerializer, ResetPasswordSerializer
-from rest_framework.generics import GenericAPIView
-from rest_framework.decorators import APIView
 from rest_framework.response import Response
-from rest_framework.request import Request
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework import status
-from rest_framework.parsers import JSONParser
+from rest_framework.views import APIView
 
-# Create your views here.
+from django.core.mail import EmailMultiAlternatives
+from django.dispatch import receiver
+from django.template.loader import render_to_string
+from django.urls import reverse
 
-
-class SignupView(GenericAPIView):
-    serializer_class = SignupSerializer
-    permission_classes = [AllowAny, ]
-    parser_classes = [JSONParser]
-
-    def post(self, request: Request):
-        data = request.data
-
-        serializer = self.serializer_class(data=data)
-
-        if serializer.is_valid():
-            serializer.save()
-
-            response = {
-                "message": "Signup is succesful"
-            }
-
-            return Response(data=response, status=status.HTTP_201_CREATED)
-        response = {
-            "message": "Signup unsuccessful, Username or email already exits"
-        }
-
-        return Response(data=response, status=status.HTTP_400_BAD_REQUEST)
+from django_rest_passwordreset.signals import reset_password_token_created
 
 
-class LoginView(GenericAPIView):
-    permission_classes = [AllowAny, ]
-    parser_classes = [JSONParser]
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+    context = {
+        'current_user': reset_password_token.user,
+        'username': reset_password_token.user.username,
+        'email': reset_password_token.user.email,
+        'reset_password_url': "https://fileserver-six.vercel.app/reset-password?token={}".format(reset_password_token.key)
+    }
 
-    def post(self, request: Request):
-        email = request.data.get("email")
-        password = request.data.get("password")
+    email_html_message = render_to_string(
+        'account/email/user_reset_password.html', context)
+    email_plaintext_message = render_to_string(
+        'account/email/user_reset_password.txt', context)
 
-        user = authenticate(email=email, password=password)
-
-        if user is not None:
-
-            token, created = Token.objects.get_or_create(user=user)
-
-            response = {
-                "message": "Login successful",
-                "token": token.key
-            }
-
-            return Response(data=response, status=status.HTTP_200_OK)
-
-        response = {
-            "message": "Login Failed"
-        }
-
-        return Response(data=response, status=status.HTTP_400_BAD_REQUEST)
+    msg = EmailMultiAlternatives(
+        # title:
+        "Password Reset for {title}".format(title="File Server App"),
+        # message:
+        email_plaintext_message,
+        # from:
+        "ben.angmortey@gmail.com",
+        # to:
+        [reset_password_token.user.email]
+    )
+    msg.attach_alternative(email_html_message, "text/html")
+    msg.send()
 
 
-class ResetPasswordView(GenericAPIView):
-    serializer_class = ResetPasswordSerializer
-    permission_classes = [AllowAny,]
-    parser_classes = [JSONParser]
-
-    def post(self, request: Request):
-        data = request.data
-
-        serializer = self.serializer_class(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            response = {
-                "message": "Password reset successful"
-            }
-            return Response(data=response, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class AccountEmailVerificationSentView(APIView):
+    def get(self, request):
+        return Response({'message': 'Account email verification sent.'})

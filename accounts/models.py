@@ -36,13 +36,12 @@ class CustomUser(BaseUserManager):
 
 class User(AbstractUser):
     email = models.EmailField(unique=True, max_length=50)
-    username = models.CharField(max_length=50)
 
     objects = CustomUser()
 
     USERNAME_FIELD = "email"
 
-    REQUIRED_FIELDS = ["username"]
+    REQUIRED_FIELDS = []
 
     def __str__(self) -> str:
-        return f"{self.username} -> {self.email}"
+        return f"user -> {self.email}"
