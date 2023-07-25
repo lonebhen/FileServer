@@ -236,5 +236,3 @@ LOGIN_URL = 'https://fileserver-six.vercel.app/login'
 
 
 SITE_DOMAIN = 'https://fileserver-six.vercel.app/welcome'
-
-ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'https://fileserver-six.vercel.app/welcome'
