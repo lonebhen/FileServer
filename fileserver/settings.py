@@ -232,7 +232,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 LOGIN_REDIRECT_URL = 'https://fileserver-six.vercel.app/welcome'
-LOGIN_URL = 'https://fileserver-six.vercel.app/welcome'
+LOGIN_URL = 'https://fileserver-six.vercel.app/login'
 
 
 SITE_DOMAIN = 'https://fileserver-six.vercel.app/welcome'
